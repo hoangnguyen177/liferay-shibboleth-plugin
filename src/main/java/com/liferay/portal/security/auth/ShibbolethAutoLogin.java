@@ -13,8 +13,10 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.security.ldap.PortalLDAPImporterUtil;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.shibboleth.util.ShibbolethPropsKeys;
+import com.liferay.portal.shibboleth.util.SpecCharHack;
 import com.liferay.portal.shibboleth.util.Util;
 import com.liferay.portal.util.PortalUtil;
 
@@ -25,19 +27,47 @@ import java.util.*;
 
 /**
  * Performs autologin based on the header values passed by Shibboleth.
- * 
+ *
  * The Shibboleth user ID header set in the configuration must contain the user
  * ID, if users are authenticated by screen name or the user email, if the users
  * are authenticated by email (Portal settings --> Authentication --> General).
- * 
+ *
  * @author Romeo Sheshi
  * @author Ivan Novakov <ivan.novakov@debug.cz>
  */
 public class ShibbolethAutoLogin implements AutoLogin {
 
-	private static Log _log = LogFactoryUtil.getLog(ShibbolethAutoLogin.class);
+    private static Log _rlog = LogFactoryUtil.getLog(ShibbolethAutoLogin.class);
 
-    @Override
+    private class FakeLog {
+
+        private void info(String message) {
+            _rlog.error(message);
+        }
+
+        private void error(String message) {
+            _rlog.error(message);
+        }
+
+        private void error(Throwable e) {
+            _rlog.error(e);
+        }
+
+        private void error(Object o1, Throwable o2) {
+            _rlog.error(o1, o2);
+        }
+
+        private void debug(String message) {
+            _rlog.error(message);
+        }
+
+        private boolean isDebugEnabled() {
+            return true;
+        }
+
+    }
+    private final FakeLog _log = new FakeLog();
+
     public String[] handleException(HttpServletRequest request, HttpServletResponse response, Exception e) throws AutoLoginException {
         // taken from BaseAutoLogin
         if (Validator.isNull(request.getAttribute(AutoLogin.AUTO_LOGIN_REDIRECT))) {
@@ -55,7 +85,6 @@ public class ShibbolethAutoLogin implements AutoLogin {
         HttpSession session = req.getSession(false);
         long companyId = PortalUtil.getCompanyId(req);
 
-
         try {
             _log.info("Shibboleth Autologin [modified 2]");
 
@@ -63,7 +92,8 @@ public class ShibbolethAutoLogin implements AutoLogin {
                 return credentials;
             }
 
-            user = loginFromSession(companyId, session);
+            ServiceContext serviceContext = ServiceContextFactory.getInstance(req);
+            user = loginFromSession(companyId, session, serviceContext);
             if (Validator.isNull(user)) {
                 return credentials;
             }
@@ -84,19 +114,27 @@ public class ShibbolethAutoLogin implements AutoLogin {
         return credentials;
     }
 
-    private User loginFromSession(long companyId, HttpSession session) throws Exception {
+    private User loginFromSession(long companyId, HttpSession session, ServiceContext serviceContext) throws Exception {
         String login;
         User user = null;
 
         login = (String) session.getAttribute(ShibbolethPropsKeys.SHIBBOLETH_LOGIN);
+
         if (Validator.isNull(login)) {
             return null;
+        }
+
+        if (Validator.isEmailAddress(login)) {
+            // most probably it is an eduPersonPrincipalName. Make transformations
+            login = login.replaceAll("@", ".at.");
+            _log.info("Login name is converted to:" + login + " by ShibbolethAutoLogin");
         }
 
         String authType = Util.getAuthType(companyId);
 
         try {
-            if (authType.equals(CompanyConstants.AUTH_TYPE_SN)) {
+            //if (authType.equals(CompanyConstants.AUTH_TYPE_SN)) {
+            if (true) {
                 _log.info("Trying to find user with screen name: " + login);
                 user = UserLocalServiceUtil.getUserByScreenName(companyId, login);
             } else if (authType.equals(CompanyConstants.AUTH_TYPE_EA)) {
@@ -108,17 +146,18 @@ public class ShibbolethAutoLogin implements AutoLogin {
 
             _log.info("User found: " + user.getScreenName() + " (" + user.getEmailAddress() + ")");
 
-            if (Util.autoUpdateUser(companyId)) {
+            //if (Util.autoUpdateUser(companyId)) {
+            if (true) {
                 _log.info("Auto-updating user...");
                 updateUserFromSession(user, session);
             }
 
         } catch (NoSuchUserException e) {
-            _log.error("User "  + login + " not found");
+            _log.error("User " + login + " not found");
 
             if (Util.autoCreateUser(companyId)) {
                 _log.info("Importing user from session...");
-                user = createUserFromSession(companyId, session);
+                user = createUserFromSession(companyId, session, serviceContext);
                 _log.info("Created user with ID: " + user.getUserId());
             } else if (Util.importUser(companyId)) {
                 _log.info("Importing user from LDAP...");
@@ -127,6 +166,7 @@ public class ShibbolethAutoLogin implements AutoLogin {
         }
 
         try {
+            _log.info("Updating roles...");
             updateUserRolesFromSession(companyId, user, session);
         } catch (Exception e) {
             _log.error("Exception while updating user roles from session: " + e.getMessage());
@@ -138,10 +178,16 @@ public class ShibbolethAutoLogin implements AutoLogin {
     /**
      * Create user from session
      */
-    protected User createUserFromSession(long companyId, HttpSession session) throws Exception {
+    protected User createUserFromSession(long companyId, HttpSession session, ServiceContext serviceContext) throws Exception {
         User user = null;
 
         String screenName = (String) session.getAttribute(ShibbolethPropsKeys.SHIBBOLETH_LOGIN);
+        if (Validator.isEmailAddress(screenName)) {
+            // most probably it is an eduPersonPrincipalName. Make transformations
+            screenName = screenName.replaceAll("@", ".at.");
+            _log.info("Login name is converted to:" + screenName + " by ShibbolethAutoLogin");
+        }
+        
         if (Validator.isNull(screenName)) {
             _log.error("Cannot create user - missing screen name");
             return user;
@@ -153,13 +199,15 @@ public class ShibbolethAutoLogin implements AutoLogin {
             return user;
         }
 
-        String firstname = (String) session.getAttribute(ShibbolethPropsKeys.SHIBBOLETH_HEADER_FIRSTNAME);
+        SpecCharHack spc = new SpecCharHack();
+        
+        String firstname = spc.fixChars((String) session.getAttribute(ShibbolethPropsKeys.SHIBBOLETH_HEADER_FIRSTNAME));
         if (Validator.isNull(firstname)) {
             _log.error("Cannot create user - missing firstname");
             return user;
         }
 
-        String surname = (String) session.getAttribute(ShibbolethPropsKeys.SHIBBOLETH_HEADER_SURNAME);
+        String surname = spc.fixChars((String) session.getAttribute(ShibbolethPropsKeys.SHIBBOLETH_HEADER_SURNAME));
         if (Validator.isNull(surname)) {
             _log.error("Cannot create user - missing surname");
             return user;
@@ -168,13 +216,13 @@ public class ShibbolethAutoLogin implements AutoLogin {
         _log.info("Creating user: screen name = [" + screenName + "], emailAddress = [" + emailAddress
                 + "], first name = [" + firstname + "], surname = [" + surname + "]");
 
-        return addUser(companyId, screenName, emailAddress, firstname, surname);
+        return addUser(companyId, screenName, emailAddress, firstname, surname, serviceContext);
     }
 
     /**
      * Store user
      */
-    private User addUser(long companyId, String screenName, String emailAddress, String firstName, String lastName)
+    private User addUser(long companyId, String screenName, String emailAddress, String firstName, String lastName, ServiceContext serviceContext)
             throws Exception {
 
         long creatorUserId = 0;
@@ -200,7 +248,7 @@ public class ShibbolethAutoLogin implements AutoLogin {
         long[] userGroupIds = null;
 
         boolean sendEmail = false;
-        ServiceContext serviceContext = null;
+        //ServiceContext serviceContext = null;
 
         return UserLocalServiceUtil.addUser(creatorUserId, companyId, autoPassword, password1, password2,
                 autoScreenName, screenName, emailAddress, facebookId, openId, locale, firstName, middleName, lastName,
@@ -241,7 +289,8 @@ public class ShibbolethAutoLogin implements AutoLogin {
     }
 
     private void updateUserRolesFromSession(long companyId, User user, HttpSession session) throws Exception {
-        if (!Util.autoAssignUserRole(companyId)) {
+        if (false) {
+        //if (!Util.autoAssignUserRole(companyId)) {
             return;
         }
 

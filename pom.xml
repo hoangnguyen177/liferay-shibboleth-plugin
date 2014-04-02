@@ -10,7 +10,7 @@
     <version>1.2</version>
     <properties>
         <liferay.auto.deploy.dir>/opt/lr/deploy</liferay.auto.deploy.dir>
-        <liferay.version>6.2.0-RC5</liferay.version>
+        <liferay.version>6.1.0</liferay.version>
     </properties>
     <build>
         <finalName>shibboleth-plugin-hook</finalName>

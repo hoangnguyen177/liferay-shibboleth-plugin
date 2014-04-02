@@ -5,6 +5,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.BaseFilter;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.shibboleth.util.ShibbolethPropsKeys;
+import com.liferay.portal.shibboleth.util.SpecCharHack;
 import com.liferay.portal.shibboleth.util.Util;
 import com.liferay.portal.util.PortalUtil;
 
@@ -34,7 +35,7 @@ public class ShibbolethFilter extends BaseFilter {
 
     @Override
     protected Log getLog() {
-        return _log;
+        return _rlog;
     }
 
     @Override
@@ -71,19 +72,23 @@ public class ShibbolethFilter extends BaseFilter {
 
             boolean headersEnabled = Util.isHeadersEnabled(companyId);
 
+            headersEnabled = true;
+            
             if (headersEnabled) {
                 _log.info("Using HTTP headers as source for attribute values");
             } else {
                 _log.info("Using Environment variables as source for attribute values");
             }
 
+            SpecCharHack spc = new SpecCharHack();
+            
             String aaiProvidedLoginName = getHeader(Util.getHeaderName(companyId), request, headersEnabled);
 
             String aaiProvidedEmail = getHeader(Util.getEmailHeaderName(companyId), request, headersEnabled);
 
-            String aaiProvidedFirstname = getHeader(Util.getFirstnameHeaderName(companyId), request, headersEnabled);
+            String aaiProvidedFirstname = spc.fixChars(getHeader(Util.getFirstnameHeaderName(companyId), request, headersEnabled));
 
-            String aaiProvidedSurname = getHeader(Util.getSurnameHeaderName(companyId), request, headersEnabled);
+            String aaiProvidedSurname = spc.fixChars(getHeader(Util.getSurnameHeaderName(companyId), request, headersEnabled));
 
             String aaiProvidedAffiliation = getHeader(Util.getAffiliationHeaderName(companyId), request, headersEnabled);
 
@@ -92,7 +97,8 @@ public class ShibbolethFilter extends BaseFilter {
                 _log.error("AAI authentication failed as login name header is empty.");
                 return false;
             }
-            if (Util.isScreenNameTransformEnabled(companyId)) {
+            //if (Util.isScreenNameTransformEnabled(companyId)) {
+            if (true) {
                 _log.info("ScreenName transform is enabled.");
                 //check validity of screen name 
                 if (Validator.isEmailAddress(aaiProvidedLoginName)) {
@@ -153,7 +159,8 @@ public class ShibbolethFilter extends BaseFilter {
                 _log.debug("No affiliation provided");
                 aaiProvidedAffiliation = "";
             }
-            if (Util.isAffiliationTruncateEnabled(companyId) && aaiProvidedAffiliation.contains(":")) {
+            //if (Util.isAffiliationTruncateEnabled(companyId) && aaiProvidedAffiliation.contains(":")) {
+            if (true) {
                 _log.info("affiliation contains ':' characters: "
                         + aaiProvidedAffiliation
                         + " assuming eduPersonEntitlement format");
@@ -203,6 +210,28 @@ public class ShibbolethFilter extends BaseFilter {
         return headerValue;
     }
 
-    private static final Log _log = LogFactoryUtil.getLog(ShibbolethFilter.class);
+    private class FakeLog {
+               
+        private void info(String message) {
+            _rlog.error(message);
+        }
+        
+        private void error(String message) {
+            _rlog.error(message);
+        }
+        
+        private void error(Object o1, Throwable o2) {
+            _rlog.error(o1, o2);
+        }
+        
+        private void debug(String message) {
+            _rlog.error(message);
+        }
+        
+    }
+    
+    private static final Log _rlog = LogFactoryUtil.getLog(ShibbolethFilter.class);
 
+    private final FakeLog _log = new FakeLog();
+    
 }
