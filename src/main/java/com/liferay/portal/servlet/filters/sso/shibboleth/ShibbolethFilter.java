@@ -173,7 +173,9 @@ public class ShibbolethFilter extends BaseFilter {
                     aaiProvidedAffiliation = "";
 
                     for (int i = 0; i < affiliations.length; i++) {
-                        aaiProvidedAffiliation += affiliations[i];
+                        String[] parts = affiliations[i].split(":");
+                        String aaiProvidedAffiliationPart = parts[parts.length - 1];
+                        aaiProvidedAffiliation += aaiProvidedAffiliationPart;
                         if (i < affiliations.length - 1) {
                             aaiProvidedAffiliation += ";";
                         }
