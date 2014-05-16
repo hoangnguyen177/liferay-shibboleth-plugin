@@ -34,6 +34,8 @@ import java.util.*;
  *
  * @author Romeo Sheshi
  * @author Ivan Novakov <ivan.novakov@debug.cz>
+ * @author Mihaly Heder <mihaly.heder@sztaki.mta.hu>
+ * 
  */
 public class ShibbolethAutoLogin implements AutoLogin {
 
@@ -133,8 +135,7 @@ public class ShibbolethAutoLogin implements AutoLogin {
         String authType = Util.getAuthType(companyId);
 
         try {
-            //if (authType.equals(CompanyConstants.AUTH_TYPE_SN)) {
-            if (true) {
+            if (authType.equals(CompanyConstants.AUTH_TYPE_SN)) {
                 _log.info("Trying to find user with screen name: " + login);
                 user = UserLocalServiceUtil.getUserByScreenName(companyId, login);
             } else if (authType.equals(CompanyConstants.AUTH_TYPE_EA)) {
@@ -146,8 +147,7 @@ public class ShibbolethAutoLogin implements AutoLogin {
 
             _log.info("User found: " + user.getScreenName() + " (" + user.getEmailAddress() + ")");
 
-            //if (Util.autoUpdateUser(companyId)) {
-            if (true) {
+            if (Util.autoUpdateUser(companyId)) {
                 _log.info("Auto-updating user...");
                 updateUserFromSession(user, session);
             }
@@ -289,8 +289,7 @@ public class ShibbolethAutoLogin implements AutoLogin {
     }
 
     private void updateUserRolesFromSession(long companyId, User user, HttpSession session) throws Exception {
-        if (false) {
-        //if (!Util.autoAssignUserRole(companyId)) {
+        if (!Util.autoAssignUserRole(companyId)) {
             return;
         }
 
