@@ -1,14 +1,10 @@
 Shibboleth Authentication Plugin for Liferay
 ============================================
 
-This plugin is an extended version of the plugin by rsheshi@gmail.com (see below).
+This plugin is a forked version of the plugin by Ivan Novakov that is itself an extesion of rsheshi@gmail.com's plugin (see below).
 
-Additional features has been added:
+This is a backport to Liferay 6.1.0 for Science Portals. Some additional logging, error handling, etc. is added.
 
-* auto create users using Shibboleth attributes (email, first name, last name)
-* auto update user information upon login
-* added options to specify the headers (Shibboleth attributes) to be used for extracting email, first name and last name
-* basic attribute to role mapping
 
 Requirements
 ------------
@@ -156,12 +152,15 @@ Licence
 
 Contact
 -------
+* homepage: https://github.com/mheder/liferay-shibboleth-plugin/tree/liferay610
 
-* homepage: https://github.com/ivan-novakov/liferay-shibboleth-plugin
 
-
-Original plugin
+Original plugins
 ---------------
+
+By Ivan Novakov
+
+https://github.com/ivan-novakov/liferay-shibboleth-plugin
 
 By rsheshi@gmail.com:
 
