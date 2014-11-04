@@ -34,10 +34,13 @@ public class ShibbolethPropsKeys {
 
 	public static final String SHIBBOLETH_LOGOUT_URL = "shibboleth.logout.url";
 
-       	public static final String SHIBBOLETH_HEADERS_ENABLE = "shibboleth.headers.enabled";
+    public static final String SHIBBOLETH_HEADERS_ENABLE = "shibboleth.headers.enabled";
 
-        public static final String SHIBBOLETH_AFFILIATION_TRUNCATE_ENABLE = "shibboleth.affiliation.truncate.enabled";
+    public static final String SHIBBOLETH_AFFILIATION_TRUNCATE_ENABLE = "shibboleth.affiliation.truncate.enabled";
 
-        public static final String SHIBBOLETH_SCREENNAME_TRANSFORM_ENABLE = "shibboleth.screenname.transform.enabled";
+    public static final String SHIBBOLETH_SCREENNAME_TRANSFORM_ENABLE = "shibboleth.screenname.transform.enabled";
+
+   	public static final String SHIBBOLETH_HEADER_AFFILIATION_PREFIX = "shibboleth.header.affiliation.prefix";
+
 
 }

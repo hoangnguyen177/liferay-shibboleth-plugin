@@ -103,5 +103,9 @@ public final class Util {
 	private static String getValue(long companyId, String key) throws Exception {
 		return PrefsPropsUtil.getString(companyId, key);
 	}
+	public static String getAffiliationHeaderPrefix(long companyId) throws Exception {
+		return GetterUtil.get(getValue(companyId, ShibbolethPropsKeys.SHIBBOLETH_HEADER_AFFILIATION_PREFIX),
+				ShibbolethPropsValues.SHIBBOLETH_HEADER_AFFILIATION_PREFIX);
+	}
 
 }

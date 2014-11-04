@@ -87,6 +87,7 @@ public class ShibbolethFilter extends BaseFilter {
 
             String aaiProvidedAffiliation = getHeader(Util.getAffiliationHeaderName(companyId), request, headersEnabled);
 
+
             if (Validator.isNull(aaiProvidedLoginName)) {
                 _log.error("Required header [" + Util.getHeaderName(companyId) + "] not found");
                 _log.error("AAI authentication failed as login name header is empty.");
@@ -95,15 +96,16 @@ public class ShibbolethFilter extends BaseFilter {
             if (Util.isScreenNameTransformEnabled(companyId)) {
                 _log.info("ScreenName transform is enabled.");
                 //check validity of screen name 
-                if (Validator.isEmailAddress(aaiProvidedLoginName)) {
+              
                     // most probably it is an eduPersonPrincipalName. Make transformations
+                if(aaiProvidedLoginName.contains("@")){
                     _log.info("The login name provided by AAI looks like an "
                             + "email (or eduPersonPrincipalName): "
                             + aaiProvidedLoginName
                             + " It needs to be converted to be a Liferay screen name.");
                     aaiProvidedLoginName = aaiProvidedLoginName.replaceAll("@", ".at.");
                     _log.info("Login name is converted to:" + aaiProvidedLoginName);
-                }
+                } else _log.info("error");
                 //Liferay does not like underscores
                 if (aaiProvidedLoginName.contains("_")) {
                     _log.info("The login name provided by AAI contains underscores:"
@@ -166,7 +168,8 @@ public class ShibbolethFilter extends BaseFilter {
                     aaiProvidedAffiliation = "";
 
                     for (int i = 0; i < affiliations.length; i++) {
-                        aaiProvidedAffiliation += affiliations[i];
+                        String[] parts = affiliations[i].split(":");
+                        aaiProvidedAffiliation += parts[parts.length - 1];
                         if (i < affiliations.length - 1) {
                             aaiProvidedAffiliation += ";";
                         }

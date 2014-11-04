@@ -8,7 +8,7 @@
     final String SHIBBOLETH_HEADERS_ENABLE = "shibboleth.headers.enabled";
     final String SHIBBOLETH_AFFILIATION_TRUNCATE_ENABLE = "shibboleth.affiliation.truncate.enabled";
     final String SHIBBOLETH_SCREENNAME_TRANSFORM_ENABLE = "shibboleth.screenname.transform.enabled";
-    
+
     final String SHIBBOLETH_HEADER_EMAIL = "shibboleth.header.email";
     final String SHIBBOLETH_HEADER_FIRSTNAME = "shibboleth.header.firstname";
     final String SHIBBOLETH_HEADER_SURNAME = "shibboleth.header.surname";
@@ -17,6 +17,7 @@
     final String SHIBBOLETH_USER_AUTO_UPDATE = "shibboleth.user.auto.update";
     final String SHIBBOLETH_USER_ROLE_AUTO_ASSIGN = "shibboleth.user.role.auto.assign";
     final String SHIBBOLETH_USER_ROLE_AUTO_ASSIGN_SUBTYPE = "shibboleth.user.role.auto.assign.subtype";
+    final String SHIBBOLETH_HEADER_AFFILIATION_PREFIX = "shibboleth.header.affiliation.prefix";
 
     String shibbolethEnabled = PrefsPropsUtil.getString(company.getCompanyId(), SHIBBOLETH_ENABLED, "false");
     String shibbolethHeader = PrefsPropsUtil.getString(company.getCompanyId(), SHIBBOLETH_HEADER, "");
@@ -35,6 +36,7 @@
     String shibbolethUserAutoUpdate = PrefsPropsUtil.getString(company.getCompanyId(), SHIBBOLETH_USER_AUTO_UPDATE, "false");
     String shibbolethUserRoleAutoAssign = PrefsPropsUtil.getString(company.getCompanyId(), SHIBBOLETH_USER_ROLE_AUTO_ASSIGN, "false");
     String shibbolethUserRoleAutoAssignSubtype = PrefsPropsUtil.getString(company.getCompanyId(), SHIBBOLETH_USER_ROLE_AUTO_ASSIGN_SUBTYPE, "");
+    String shibbolethHeaderAffiliationPrefix = PrefsPropsUtil.getString(company.getCompanyId(), SHIBBOLETH_HEADER_AFFILIATION_PREFIX, "");
 %>
 <aui:fieldset>
         <aui:input label="enabled" name='<%="settings--" + SHIBBOLETH_ENABLED + "--" %>' type="checkbox"
@@ -73,6 +75,9 @@
         <aui:input cssClass="lfr-input-text-container" label="logout-url"
                    name='<%= "settings--" + SHIBBOLETH_LOGOUT_URL + "--" %>' type="text"
                    value="<%= shibbolethLogoutUrl %>"/>
+        <aui:input cssClass="lfr-input-text-container" label="shibboleth-user-header-affiliation-prefix"
+                   name='<%= "settings--" + SHIBBOLETH_HEADER_AFFILIATION_PREFIX + "--" %>' type="text"
+                   value="<%= shibbolethHeaderAffiliationPrefix %>"/>   
         <aui:input label="shibboleth-headers-enable" name='<%= "settings--" + SHIBBOLETH_HEADERS_ENABLE + "--" %>'
                    type="checkbox" value="<%= shibbolethHeadersEnabled %>"/>
 </aui:fieldset>
