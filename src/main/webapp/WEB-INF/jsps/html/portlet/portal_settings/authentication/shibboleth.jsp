@@ -18,6 +18,7 @@
     final String SHIBBOLETH_USER_ROLE_AUTO_ASSIGN = "shibboleth.user.role.auto.assign";
     final String SHIBBOLETH_USER_ROLE_AUTO_ASSIGN_SUBTYPE = "shibboleth.user.role.auto.assign.subtype";
     final String SHIBBOLETH_HEADER_AFFILIATION_PREFIX = "shibboleth.header.affiliation.prefix";
+    final String SHIBBOLETH_USER_ROLE_AUTO_CREATE = "shibboleth.user.role.auto.create";
 
     String shibbolethEnabled = PrefsPropsUtil.getString(company.getCompanyId(), SHIBBOLETH_ENABLED, "false");
     String shibbolethHeader = PrefsPropsUtil.getString(company.getCompanyId(), SHIBBOLETH_HEADER, "");
@@ -37,6 +38,7 @@
     String shibbolethUserRoleAutoAssign = PrefsPropsUtil.getString(company.getCompanyId(), SHIBBOLETH_USER_ROLE_AUTO_ASSIGN, "false");
     String shibbolethUserRoleAutoAssignSubtype = PrefsPropsUtil.getString(company.getCompanyId(), SHIBBOLETH_USER_ROLE_AUTO_ASSIGN_SUBTYPE, "");
     String shibbolethHeaderAffiliationPrefix = PrefsPropsUtil.getString(company.getCompanyId(), SHIBBOLETH_HEADER_AFFILIATION_PREFIX, "");
+    String shibbolethUserRoleAutoCreate = PrefsPropsUtil.getString(company.getCompanyId(), SHIBBOLETH_USER_ROLE_AUTO_CREATE, "false");
 %>
 <aui:fieldset>
         <aui:input label="enabled" name='<%="settings--" + SHIBBOLETH_ENABLED + "--" %>' type="checkbox"
@@ -64,6 +66,9 @@
         <aui:input label="import-shibboleth-users-from-ldap"
                    name='<%= "settings--" + SHIBBOLETH_USER_LDAP_IMPORT + "--" %>' type="checkbox"
                    value="<%= shibbolethUserLdapImport %>"/>
+        <aui:input label="auto-create-user-role"
+                   name='<%= "settings--" + SHIBBOLETH_USER_ROLE_AUTO_CREATE + "--" %>' type="checkbox"
+                   value="<%= shibbolethUserRoleAutoCreate %>"/>
         <aui:input label="auto-assign-user-role"
                    name='<%= "settings--" + SHIBBOLETH_USER_ROLE_AUTO_ASSIGN + "--" %>' type="checkbox"
                    value="<%= shibbolethUserRoleAutoAssign %>"/>

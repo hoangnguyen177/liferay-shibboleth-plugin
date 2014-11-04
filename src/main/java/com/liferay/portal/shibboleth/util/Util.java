@@ -107,5 +107,8 @@ public final class Util {
 		return GetterUtil.get(getValue(companyId, ShibbolethPropsKeys.SHIBBOLETH_HEADER_AFFILIATION_PREFIX),
 				ShibbolethPropsValues.SHIBBOLETH_HEADER_AFFILIATION_PREFIX);
 	}
-
+    public static boolean isCreateRoleEnabled(long companyId) throws Exception {
+		return GetterUtil.get(getValue(companyId, ShibbolethPropsKeys.SHIBBOLETH_USER_ROLE_AUTO_CREATE),
+				ShibbolethPropsValues.SHIBBOLETH_USER_ROLE_AUTO_CREATE);
+	}
 }

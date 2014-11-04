@@ -42,5 +42,5 @@ public class ShibbolethPropsKeys {
 
    	public static final String SHIBBOLETH_HEADER_AFFILIATION_PREFIX = "shibboleth.header.affiliation.prefix";
 
-
+   	public static final String SHIBBOLETH_USER_ROLE_AUTO_CREATE = "shibboleth.user.role.auto.create";
 }
