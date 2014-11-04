@@ -1,3 +1,4 @@
+<%@ include file="/html/portlet/portal_settings/init.jsp" %>
 <%
     final String SHIBBOLETH_ENABLED = "shibboleth.enabled";
     final String SHIBBOLETH_HEADER = "shibboleth.header";
@@ -35,8 +36,7 @@
     String shibbolethUserRoleAutoAssign = PrefsPropsUtil.getString(company.getCompanyId(), SHIBBOLETH_USER_ROLE_AUTO_ASSIGN, "false");
     String shibbolethUserRoleAutoAssignSubtype = PrefsPropsUtil.getString(company.getCompanyId(), SHIBBOLETH_USER_ROLE_AUTO_ASSIGN_SUBTYPE, "");
 %>
-<liferay-ui:section>
-    <aui:fieldset>
+<aui:fieldset>
         <aui:input label="enabled" name='<%="settings--" + SHIBBOLETH_ENABLED + "--" %>' type="checkbox"
                    value="<%= shibbolethEnabled %>"/>
         <aui:input cssClass="lfr-input-text-container" label="shibboleth-user-id-header"
@@ -67,7 +67,7 @@
                    value="<%= shibbolethUserRoleAutoAssign %>"/>
         <aui:input cssClass="lfr-input-text-container" label="auto-assign-user-role-subtype"
                    name='<%= "settings--" + SHIBBOLETH_USER_ROLE_AUTO_ASSIGN_SUBTYPE + "--" %>' type="text"
-                   value="<%= shibbolethUserRoleAutoAssignSubtype %>"/>                   
+                   value="<%= shibbolethUserRoleAutoAssignSubtype %>"/>             
         <aui:input label="shibboleth-logout-enable" name='<%= "settings--" + SHIBBOLETH_LOGOUT_ENABLE + "--" %>'
                    type="checkbox" value="<%= shibbolethLogoutEnabled %>"/>
         <aui:input cssClass="lfr-input-text-container" label="logout-url"
@@ -75,8 +75,7 @@
                    value="<%= shibbolethLogoutUrl %>"/>
         <aui:input label="shibboleth-headers-enable" name='<%= "settings--" + SHIBBOLETH_HEADERS_ENABLE + "--" %>'
                    type="checkbox" value="<%= shibbolethHeadersEnabled %>"/>
-    </aui:fieldset>
-</liferay-ui:section>
+</aui:fieldset>
 
 
 
