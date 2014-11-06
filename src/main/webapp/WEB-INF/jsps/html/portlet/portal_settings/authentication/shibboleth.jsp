@@ -1,3 +1,4 @@
+<%@ include file="/html/portlet/portal_settings/init.jsp" %>
 <%
     final String SHIBBOLETH_ENABLED = "shibboleth.enabled";
     final String SHIBBOLETH_HEADER = "shibboleth.header";
@@ -7,7 +8,7 @@
     final String SHIBBOLETH_HEADERS_ENABLE = "shibboleth.headers.enabled";
     final String SHIBBOLETH_AFFILIATION_TRUNCATE_ENABLE = "shibboleth.affiliation.truncate.enabled";
     final String SHIBBOLETH_SCREENNAME_TRANSFORM_ENABLE = "shibboleth.screenname.transform.enabled";
-    
+
     final String SHIBBOLETH_HEADER_EMAIL = "shibboleth.header.email";
     final String SHIBBOLETH_HEADER_FIRSTNAME = "shibboleth.header.firstname";
     final String SHIBBOLETH_HEADER_SURNAME = "shibboleth.header.surname";
@@ -16,6 +17,8 @@
     final String SHIBBOLETH_USER_AUTO_UPDATE = "shibboleth.user.auto.update";
     final String SHIBBOLETH_USER_ROLE_AUTO_ASSIGN = "shibboleth.user.role.auto.assign";
     final String SHIBBOLETH_USER_ROLE_AUTO_ASSIGN_SUBTYPE = "shibboleth.user.role.auto.assign.subtype";
+    final String SHIBBOLETH_HEADER_AFFILIATION_PREFIX = "shibboleth.header.affiliation.prefix";
+    final String SHIBBOLETH_USER_ROLE_AUTO_CREATE = "shibboleth.user.role.auto.create";
 
     String shibbolethEnabled = PrefsPropsUtil.getString(company.getCompanyId(), SHIBBOLETH_ENABLED, "false");
     String shibbolethHeader = PrefsPropsUtil.getString(company.getCompanyId(), SHIBBOLETH_HEADER, "");
@@ -34,9 +37,10 @@
     String shibbolethUserAutoUpdate = PrefsPropsUtil.getString(company.getCompanyId(), SHIBBOLETH_USER_AUTO_UPDATE, "false");
     String shibbolethUserRoleAutoAssign = PrefsPropsUtil.getString(company.getCompanyId(), SHIBBOLETH_USER_ROLE_AUTO_ASSIGN, "false");
     String shibbolethUserRoleAutoAssignSubtype = PrefsPropsUtil.getString(company.getCompanyId(), SHIBBOLETH_USER_ROLE_AUTO_ASSIGN_SUBTYPE, "");
+    String shibbolethHeaderAffiliationPrefix = PrefsPropsUtil.getString(company.getCompanyId(), SHIBBOLETH_HEADER_AFFILIATION_PREFIX, "");
+    String shibbolethUserRoleAutoCreate = PrefsPropsUtil.getString(company.getCompanyId(), SHIBBOLETH_USER_ROLE_AUTO_CREATE, "false");
 %>
-<liferay-ui:section>
-    <aui:fieldset>
+<aui:fieldset>
         <aui:input label="enabled" name='<%="settings--" + SHIBBOLETH_ENABLED + "--" %>' type="checkbox"
                    value="<%= shibbolethEnabled %>"/>
         <aui:input cssClass="lfr-input-text-container" label="shibboleth-user-id-header"
@@ -62,21 +66,26 @@
         <aui:input label="import-shibboleth-users-from-ldap"
                    name='<%= "settings--" + SHIBBOLETH_USER_LDAP_IMPORT + "--" %>' type="checkbox"
                    value="<%= shibbolethUserLdapImport %>"/>
+        <aui:input label="auto-create-user-role"
+                   name='<%= "settings--" + SHIBBOLETH_USER_ROLE_AUTO_CREATE + "--" %>' type="checkbox"
+                   value="<%= shibbolethUserRoleAutoCreate %>"/>
         <aui:input label="auto-assign-user-role"
                    name='<%= "settings--" + SHIBBOLETH_USER_ROLE_AUTO_ASSIGN + "--" %>' type="checkbox"
                    value="<%= shibbolethUserRoleAutoAssign %>"/>
         <aui:input cssClass="lfr-input-text-container" label="auto-assign-user-role-subtype"
                    name='<%= "settings--" + SHIBBOLETH_USER_ROLE_AUTO_ASSIGN_SUBTYPE + "--" %>' type="text"
-                   value="<%= shibbolethUserRoleAutoAssignSubtype %>"/>                   
+                   value="<%= shibbolethUserRoleAutoAssignSubtype %>"/>             
         <aui:input label="shibboleth-logout-enable" name='<%= "settings--" + SHIBBOLETH_LOGOUT_ENABLE + "--" %>'
                    type="checkbox" value="<%= shibbolethLogoutEnabled %>"/>
         <aui:input cssClass="lfr-input-text-container" label="logout-url"
                    name='<%= "settings--" + SHIBBOLETH_LOGOUT_URL + "--" %>' type="text"
                    value="<%= shibbolethLogoutUrl %>"/>
+        <aui:input cssClass="lfr-input-text-container" label="shibboleth-user-header-affiliation-prefix"
+                   name='<%= "settings--" + SHIBBOLETH_HEADER_AFFILIATION_PREFIX + "--" %>' type="text"
+                   value="<%= shibbolethHeaderAffiliationPrefix %>"/>   
         <aui:input label="shibboleth-headers-enable" name='<%= "settings--" + SHIBBOLETH_HEADERS_ENABLE + "--" %>'
                    type="checkbox" value="<%= shibbolethHeadersEnabled %>"/>
-    </aui:fieldset>
-</liferay-ui:section>
+</aui:fieldset>
 
 
 

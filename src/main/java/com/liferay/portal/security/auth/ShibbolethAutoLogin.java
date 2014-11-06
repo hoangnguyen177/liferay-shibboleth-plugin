@@ -282,14 +282,39 @@ public class ShibbolethAutoLogin implements AutoLogin {
         }
 
         String[] affiliationList = affiliation.split(";");
-
         for (String roleName : affiliationList) {
             Role role;
             try {
                 role = RoleLocalServiceUtil.getRole(companyId, roleName);
             } catch (PortalException e) {
-                _log.debug("Exception while getting role with name '" + roleName + "': " + e.getMessage());
-                continue;
+                _log.info("Exception while getting role with name '" + roleName + "': " + e.getMessage());
+                try{
+                    if(Util.isCreateRoleEnabled(companyId)){
+                        List<Role> roleList = RoleLocalServiceUtil.getRoles(companyId);
+                        long [] roleIds = roleListToLongArray(roleList);
+                        Arrays.sort(roleIds);
+                        long newId = roleIds[roleIds.length-1];
+                        newId = newId+1;
+                        role = RoleLocalServiceUtil.createRole(newId);
+
+                        long classNameId = 0;
+                        try{
+                        	classNameId = RoleLocalServiceUtil.getRole(roleIds[roleIds.length-1]).getClassNameId();
+                        }catch (PortalException ex){
+                        	_log.info("classname error");
+                        }
+                        role.setClassNameId(classNameId);
+        				role.setCompanyId(companyId);
+        				role.setClassPK(newId);
+        				role.setDescription(null);
+        				role.setTitleMap(null);
+        				role.setName(roleName);
+        				role.setType(1);
+        				RoleLocalServiceUtil.addRole(role);
+                    }else continue;
+                }catch (Exception exc){
+                    continue;
+                }        
             }
 
             currentFelRoles.add(role);

@@ -40,4 +40,7 @@ public class ShibbolethPropsValues {
 
     public static final String SHIBBOLETH_LOGOUT_URL = PropsUtil.get(ShibbolethPropsKeys.SHIBBOLETH_LOGOUT_URL);
 
+    public static final String SHIBBOLETH_HEADER_AFFILIATION_PREFIX= PropsUtil.get(ShibbolethPropsKeys.SHIBBOLETH_HEADER_AFFILIATION_PREFIX);
+   
+    public static final boolean SHIBBOLETH_USER_ROLE_AUTO_CREATE = GetterUtil.getBoolean(PropsUtil.get(ShibbolethPropsKeys.SHIBBOLETH_USER_ROLE_AUTO_CREATE));
 }
