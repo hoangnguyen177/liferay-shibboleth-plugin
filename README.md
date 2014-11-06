@@ -1,7 +1,10 @@
 Shibboleth Authentication Plugin for Liferay
 ============================================
 
-This plugin is an extended version of the plugin by rsheshi@gmail.com (see below).
+* This plugin is derived from an initial version of rsheshi@gmail.com. See: http://code.google.com/p/liferay-shibboleth-plugin/
+* The first major extension was done by Ivan Novakov. https://github.com/ivan-novakov
+* Further upgrades were made by Mihály Héder. https://github.com/mheder
+* The latest extensions were made by Szabolcs Tenczer https://github.com/burgosz
 
 Additional features has been added:
 
@@ -159,10 +162,3 @@ Contact
 
 * homepage: https://github.com/ivan-novakov/liferay-shibboleth-plugin
 
-
-Original plugin
----------------
-
-By rsheshi@gmail.com:
-
-http://code.google.com/p/liferay-shibboleth-plugin/
