@@ -100,7 +100,7 @@ Clone the repository and run the Maven install script:
 
 Then deploy the WAR file to your servlet container.
 After a successful installation a new "Shibboleth" section appears in the Liferay's Control panel at "Portal Settings / Authentication". You can adjust Shibboleth authentication there. The most important setting is the name of the attribute from with the user identity is taken.
-At the same time, in "Portal Settings --> Authentication --> General" you must set "How do users authenticate?", disable all "Allow..." options.
+At the same time, in "Portal Settings --> Authentication --> General", disable all "Allow..." options.
 
 Further steps
 -------------
