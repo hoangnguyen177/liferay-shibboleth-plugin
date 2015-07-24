@@ -24,25 +24,29 @@ public final class Util {
 				ShibbolethPropsValues.SHIBBOLETH_LOGOUT_ENABLE);
 	}
 
-        public static boolean isHeadersEnabled(long companyId) throws Exception {
+	public static boolean isHeadersEnabled(long companyId) throws Exception {
 		return GetterUtil.get(getValue(companyId, ShibbolethPropsKeys.SHIBBOLETH_HEADERS_ENABLE),
 				ShibbolethPropsValues.SHIBBOLETH_HEADERS_ENABLE);
 	}
 
-        public static boolean isAffiliationTruncateEnabled(long companyId) throws Exception {
+	public static boolean isAffiliationTruncateEnabled(long companyId) throws Exception {
 		return GetterUtil.get(getValue(companyId, ShibbolethPropsKeys.SHIBBOLETH_AFFILIATION_TRUNCATE_ENABLE),
 				ShibbolethPropsValues.SHIBBOLETH_AFFILIATION_TRUNCATE_ENABLE);
 	}
 
-        public static boolean isScreenNameTransformEnabled(long companyId) throws Exception {
+	public static boolean isScreenNameTransformEnabled(long companyId) throws Exception {
 		return GetterUtil.get(getValue(companyId, ShibbolethPropsKeys.SHIBBOLETH_SCREENNAME_TRANSFORM_ENABLE),
 				ShibbolethPropsValues.SHIBBOLETH_SCREENNAME_TRANSFORM_ENABLE);
 	}
 
-        
 	public static boolean importUser(long companyId) throws Exception {
 		return GetterUtil.get(getValue(companyId, ShibbolethPropsKeys.SHIBBOLETH_USER_LDAP_IMPORT),
 				ShibbolethPropsValues.SHIBBOLETH_USER_LDAP_IMPORT);
+	}
+
+	public static String getLoginUrl(long companyId) throws Exception {
+		return GetterUtil.getString(getValue(companyId, ShibbolethPropsKeys.SHIBBOLETH_LOGIN_URL),
+				ShibbolethPropsValues.SHIBBOLETH_LOGIN_URL);
 	}
 
 	public static String getLogoutUrl(long companyId) throws Exception {
@@ -103,11 +107,13 @@ public final class Util {
 	private static String getValue(long companyId, String key) throws Exception {
 		return PrefsPropsUtil.getString(companyId, key);
 	}
+
 	public static String getAffiliationHeaderPrefix(long companyId) throws Exception {
 		return GetterUtil.get(getValue(companyId, ShibbolethPropsKeys.SHIBBOLETH_HEADER_AFFILIATION_PREFIX),
 				ShibbolethPropsValues.SHIBBOLETH_HEADER_AFFILIATION_PREFIX);
 	}
-    public static boolean isCreateRoleEnabled(long companyId) throws Exception {
+
+	public static boolean isCreateRoleEnabled(long companyId) throws Exception {
 		return GetterUtil.get(getValue(companyId, ShibbolethPropsKeys.SHIBBOLETH_USER_ROLE_AUTO_CREATE),
 				ShibbolethPropsValues.SHIBBOLETH_USER_ROLE_AUTO_CREATE);
 	}
