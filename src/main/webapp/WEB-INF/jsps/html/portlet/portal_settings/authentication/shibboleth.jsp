@@ -5,6 +5,7 @@
     final String SHIBBOLETH_USER_LDAP_IMPORT = "shibboleth.user.ldap.import";
     final String SHIBBOLETH_LOGOUT_ENABLE = "shibboleth.logout.enabled";
     final String SHIBBOLETH_LOGOUT_URL = "shibboleth.logout.url";
+    final String SHIBBOLETH_LOGIN_URL = "shibboleth.login.url";
     final String SHIBBOLETH_HEADERS_ENABLE = "shibboleth.headers.enabled";
     final String SHIBBOLETH_AFFILIATION_TRUNCATE_ENABLE = "shibboleth.affiliation.truncate.enabled";
     final String SHIBBOLETH_SCREENNAME_TRANSFORM_ENABLE = "shibboleth.screenname.transform.enabled";
@@ -25,6 +26,7 @@
     String shibbolethUserLdapImport = PrefsPropsUtil.getString(company.getCompanyId(), SHIBBOLETH_USER_LDAP_IMPORT, "false");
     String shibbolethLogoutEnabled = PrefsPropsUtil.getString(company.getCompanyId(), SHIBBOLETH_LOGOUT_ENABLE, "false");
     String shibbolethLogoutUrl = PrefsPropsUtil.getString(company.getCompanyId(), SHIBBOLETH_LOGOUT_URL, "");
+    String shibbolethLoginUrl = PrefsPropsUtil.getString(company.getCompanyId(), SHIBBOLETH_LOGIN_URL, "");
     String shibbolethHeadersEnabled = PrefsPropsUtil.getString(company.getCompanyId(), SHIBBOLETH_HEADERS_ENABLE, "false");
     String shibbolethAffiliationTruncateEnabled = PrefsPropsUtil.getString(company.getCompanyId(), SHIBBOLETH_AFFILIATION_TRUNCATE_ENABLE, "false");
     String shibbolethScreenNameTransformEnabled = PrefsPropsUtil.getString(company.getCompanyId(), SHIBBOLETH_SCREENNAME_TRANSFORM_ENABLE, "false");
@@ -43,6 +45,9 @@
 <aui:fieldset>
         <aui:input label="enabled" name='<%="settings--" + SHIBBOLETH_ENABLED + "--" %>' type="checkbox"
                    value="<%= shibbolethEnabled %>"/>
+        <aui:input cssCLass="lfr-input-text-container" label="login-url"
+                   name='<%= "settings--" + SHIBBOLETH_LOGIN_URL + "--" %>' type="text"
+                   value="<%= shibbolethLoginUrl %>"/>
         <aui:input cssClass="lfr-input-text-container" label="shibboleth-user-id-header"
                    name='<%= "settings--" + SHIBBOLETH_HEADER + "--" %>' type="text" value="<%= shibbolethHeader %>"/>
         <aui:input label="shibboleth-screenname-transform-enable" name='<%= "settings--" + SHIBBOLETH_SCREENNAME_TRANSFORM_ENABLE + "--" %>'

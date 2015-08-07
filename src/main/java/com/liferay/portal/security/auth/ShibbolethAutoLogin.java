@@ -100,8 +100,14 @@ public class ShibbolethAutoLogin implements AutoLogin {
                 _log.info("Trying to find user with screen name: " + login);
                 user = UserLocalServiceUtil.getUserByScreenName(companyId, login);
             } else if (authType.equals(CompanyConstants.AUTH_TYPE_EA)) {
-                _log.info("Trying to find user with email: " + login);
-                user = UserLocalServiceUtil.getUserByEmailAddress(companyId, login);
+
+                String emailAddress = (String) session.getAttribute(ShibbolethPropsKeys.SHIBBOLETH_HEADER_EMAIL);
+                if (Validator.isNull(emailAddress)) {
+                    return null;
+                }
+
+                _log.info("Trying to find user with email: " + emailAddress);
+                user = UserLocalServiceUtil.getUserByEmailAddress(companyId, emailAddress);
             } else {
                 throw new NoSuchUserException();
             }

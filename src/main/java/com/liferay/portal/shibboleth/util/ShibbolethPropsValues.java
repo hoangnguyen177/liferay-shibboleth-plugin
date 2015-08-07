@@ -38,6 +38,8 @@ public class ShibbolethPropsValues {
 
     public static final boolean SHIBBOLETH_SCREENNAME_TRANSFORM_ENABLE = GetterUtil.getBoolean(PropsUtil.get(ShibbolethPropsKeys.SHIBBOLETH_SCREENNAME_TRANSFORM_ENABLE));
 
+    public static final String SHIBBOLETH_LOGIN_URL = PropsUtil.get(ShibbolethPropsKeys.SHIBBOLETH_LOGIN_URL);
+
     public static final String SHIBBOLETH_LOGOUT_URL = PropsUtil.get(ShibbolethPropsKeys.SHIBBOLETH_LOGOUT_URL);
 
     public static final String SHIBBOLETH_HEADER_AFFILIATION_PREFIX= PropsUtil.get(ShibbolethPropsKeys.SHIBBOLETH_HEADER_AFFILIATION_PREFIX);
