@@ -94,7 +94,7 @@ Plugin installation and configuration
 
 Clone the repository and run the Maven install script:
 
-    # git clone https://github.com/ivan-novakov/liferay-shibboleth-plugin.git
+    # git clone https://github.com/mheder/liferay-shibboleth-plugin
     # cd liferay-shibboleth-plugin
     # mvn install
 
