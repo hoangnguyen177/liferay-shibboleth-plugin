@@ -13,7 +13,7 @@
         <liferay.version>6.2.0-RC5</liferay.version>
     </properties>
     <build>
-        <finalName>shibboleth-plugin</finalName>
+        <finalName>liferay-shibboleth-plugin-hook</finalName>
         <plugins>
             <plugin>
                 <groupId>com.liferay.maven.plugins</groupId>
