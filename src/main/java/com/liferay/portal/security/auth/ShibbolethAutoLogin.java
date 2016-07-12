@@ -195,9 +195,9 @@ public class ShibbolethAutoLogin implements AutoLogin {
         int prefixId = 0;
         int suffixId = 0;
         boolean male = true;
-        int birthdayMonth = Calendar.JANUARY;
-        int birthdayDay = 1;
-        int birthdayYear = 1970;
+        int birthdayMonth = Calendar.JULY;
+        int birthdayDay = 17;
+        int birthdayYear = 1986;
         String jobTitle = StringPool.BLANK;
 
         long[] groupIds = null;
